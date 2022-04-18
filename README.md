@@ -2,8 +2,8 @@
 Easy File Share Project (WEB and Android native)
 
 Developer
- * YoungQ (youngq.tistory.com)
- * 티스토리<yekyu94@naver.com>
+ * YoungQ <youngq.tistory.com>
+ * Email  : yekyu94@naver.com
 
 
 ## 시작하기
