@@ -1,7 +1,7 @@
 # GoShare
 Easy File Share Project (WEB and Android native)
 
-Developer : YoungQ (youngq.tistory.com)
+Developer : YoungQ (youngq.tistory.com)<br>
             yekyu94@naver.com
 
 
