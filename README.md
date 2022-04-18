@@ -1,6 +1,10 @@
 # GoShare
 Easy File Share Project (WEB and Android native)
 
+Developer : YoungQ (youngq.tistory.com)
+            yekyu94@naver.com
+
+
 ## 시작하기
  1. 화면 및 서비스
     - Android Native App
