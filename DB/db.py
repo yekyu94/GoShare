@@ -50,6 +50,9 @@ class Users(db.Model):
         self.mail = mail
         self.del_yn = del_yn
 
+    def __repr__(self):
+        return '<Users %r>' % (self.id)
+
     Files = db.relationship("Files", cascade = "all, delete")
 
 class Logs(db.Model):
