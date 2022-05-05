@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restx import Resource, Api
 from DB.db import db
 from API.auth import Auth
+from API.dirManage import DirManager
 import os, json
 
 app = Flask(__name__)
@@ -27,6 +28,7 @@ api = Api(
 )
 
 api.add_namespace(Auth, '/auth')
+api.add_namespace(DirManager, '/dir')
 
 
 if __name__ == "__main__":

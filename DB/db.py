@@ -12,8 +12,7 @@ class Files(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey('Users.uid'), nullable=False)
     del_yn = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, fid, fname, fsize = 0, del_yn = 0):
-        self.fid = fid
+    def __init__(self, fname, fsize = 0, del_yn = 0):
         self.fname = fname
         self.fsize = fsize
         self.del_yn = del_yn
@@ -27,8 +26,7 @@ class Dir(db.Model):
     path = db.Column(db.Text, nullable=False)
     ppid = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, pid, path, ppid = 0):
-        self.pid = pid
+    def __init__(self, path, ppid = 0):
         self.path = path
         self.ppid = ppid
 
@@ -43,8 +41,7 @@ class Users(db.Model):
     mail = db.Column(db.Text, nullable=False)
     del_yn = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, uid, id, pw, mail, del_yn = 0):
-        self.uid = uid
+    def __init__(self, id, pw, mail, del_yn = 0):
         self.id = id
         self.pw = pw
         self.mail = mail
@@ -62,8 +59,7 @@ class Logs(db.Model):
     task = db.Column(db.Integer)
     data = db.Column(db.Text)
 
-    def __init__(self, tid, time, id, task, data):
-        self.tid = tid
+    def __init__(self, time, id, task, data):
         self.time = time
         self.id = id
         self.task = task
@@ -76,8 +72,7 @@ class Share(db.Model):
     code = db.Column(db.Integer, nullable=True)
     pin = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, sid, fid, uid, code, pin):
-        self.sid = sid
+    def __init__(self, fid, uid, code, pin):
         self.fid = fid
         self.uid = uid
         self.code = code
@@ -89,8 +84,7 @@ class Timer(db.Model):
     id = db.Column(db.Integer, nullable=True)
     timer = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, tid, type, id, timer):
-        self.tid = tid
+    def __init__(self, type, id, timer):
         self.type = type
         self.id = id
         self.timer = timer

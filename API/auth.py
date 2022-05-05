@@ -42,7 +42,7 @@ class APITest(Resource):
             id = request.json.get('id')
             token = request.json.get('token')
             seed = request.json.get('seed')
-            print(id, token)
+            
             if(checkToken(id, token, seed) == 0):
                 return '성공'
             elif(checkToken(id, token, seed) == 1):
@@ -63,8 +63,6 @@ Return
 def checkToken(id, token, seed):
     try:
         global Timer, TokenGroup
-        print("id : " + TokenGroup[id])
-        print("decode" + str(jwt.decode(token.encode("utf-8"), secret+seed, algorithm="HS256")))
 
         if((time.time() - Timer[id]) > 600):    # 토큰 파기
             Timer.pop(id)
@@ -83,15 +81,7 @@ def checkToken(id, token, seed):
         return -1
 
 
-#print(x)
-            #x.pw = '5555'
-            #db.session.commit()
-            #print(x.pw)
-            #encrypted_password = bcrypt.hashpw("cocoa".encode("utf-8"), bcrypt.gensalt())
-            #x.pw = encrypted_password
-            #db.session.commit()
-            #print(x.pw)
-            #encoded = jwt.encode(item, "secret", algorithm="HS256")
-            #print(encoded)
-            #decode = jwt.decode(item, "secret", algorithms="HS256")
-            #print(decode)
+#db.session.commit()
+#encrypted_password = bcrypt.hashpw("cocoa".encode("utf-8"), bcrypt.gensalt())
+#x.pw = encrypted_password
+#db.session.commit()
