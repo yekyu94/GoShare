@@ -3,6 +3,7 @@ from flask_restx import Resource, Api
 from DB.db import db
 from API.auth import Auth
 from API.dirManage import DirManager
+from API.fileManage import FileManager
 import os, json
 
 app = Flask(__name__)
@@ -12,6 +13,8 @@ with open('.secret') as f:
     app.config['SQLALCHEMY_DATABASE_URI'] = conf['db_config']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = conf['secret_key']
+    app.config['UPLOAD_FOLDER'] = conf['upload_path']
+    app.config['MAX_CONTENT_LENGTH'] = 1000000000
 
 db.init_app(app)
 db.app = app
@@ -29,6 +32,7 @@ api = Api(
 
 api.add_namespace(Auth, '/auth')
 api.add_namespace(DirManager, '/dir')
+api.add_namespace(FileManager, '/file')
 
 
 if __name__ == "__main__":

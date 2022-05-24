@@ -29,25 +29,25 @@ class MakeDir(Resource):
             path = str(request.json.get('path'))
             token = str(request.json.get('token'))
             seed = str(request.json.get('seed'))
+            id = str(request.json.get('id'))
+            
             if(ppid.isdecimal() and path.isalnum()):
                 ppid = int(ppid)
             else:
-                return 1
+                raise BadRequest('Input Error #1')
             
-            # check = checkToken(id, token, seed)
-            # if(check == 1):
-            #     return '토큰 파기'
-            # elif(check == 2):
-            #     return '토큰 오류'
+            checkToken(id, token, seed)
 
             checkId = db.session.query(Dir).filter(Dir.pid==ppid).first()
             if(checkId == None):
-                return 2
+                raise BadRequest('Input Error #2')
             checkName = db.session.query(Dir).filter(and_(Dir.ppid==ppid, Dir.path == path)).first()
             if(checkName != None):
-                return 3
+                raise BadRequest('Input Error #3')
             db.session.add(Dir(path, ppid))
             db.session.commit()
-            return 0
-        except:
-            return -1
+            return {'dir' : 'Success'}
+        except BadRequest as e:
+            return {'ERROR': str(e)}
+        except Exception as e:
+            return {'ERROR': '1'}

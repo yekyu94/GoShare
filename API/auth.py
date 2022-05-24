@@ -1,6 +1,7 @@
 from flask import request
 from flask_restx import Resource, Api, Namespace
 from DB.db import db, Users
+from werkzeug.exceptions import BadRequest
 import bcrypt, jwt, random, json, time
 
 Auth = Namespace(
@@ -24,7 +25,7 @@ class GetToken(Resource):
             pw = str(request.json.get('pw'))
 
             user = db.session.query(Users).filter(Users.id==id).first()     # 사용자의 계정정보 확인
-            if(bcrypt.checkpw(pw.encode("utf-8"), user.pw)):           # 사용자의 계정암호가 동일한지 확인
+            if(bcrypt.checkpw(pw.encode("utf-8"), user.pw)):                # 사용자의 계정암호가 동일한지 확인
                 global tokenGroup, Timer
                 seed = str(int(random.random() * 100000))
                 token = jwt.encode({'user':id}, secret+seed, algorithm="HS256").decode("utf-8")
@@ -33,7 +34,7 @@ class GetToken(Resource):
                 return { 'Auth' : token, 'seed' : seed}
             return {'Auth' : '0', 'seed' : '0'}
         except:
-            return -1
+            return {'ERROR': '01'}
 
 @Auth.route('/APITest')
 class APITest(Resource):
@@ -43,12 +44,7 @@ class APITest(Resource):
             token = request.json.get('token')
             seed = request.json.get('seed')
             
-            if(checkToken(id, token, seed) == 0):
-                return '성공'
-            elif(checkToken(id, token, seed) == 1):
-                return '토큰 파기'
-            elif(checkToken(id, token, seed) == 2):
-                return '토큰 오류'
+            checkToken(id, token, seed)
         except:
             return 'Error'
 
@@ -61,24 +57,26 @@ Return
     2 : 토큰 오류
 '''
 def checkToken(id, token, seed):
+    return True
     try:
+        abort(400, custom='value')
         global Timer, TokenGroup
 
-        if((time.time() - Timer[id]) > 600):    # 토큰 파기
+        if((time.time() - Timer[id]) > 600):    # 토큰 만료
             Timer.pop(id)
             TokenGroup.pop(id)
-            return 1
+            raise BadRequest('토큰 만료')
 
-        if(TokenGroup[id] == token):        # 토큰 확인
+        if(TokenGroup[id] == token):        # 토큰 확인 
             if(jwt.decode(token.encode("utf-8"), secret+seed, algorithm="HS256")['user'] == id):
                 Timer[id] = time.time()     # 최종 접속시간 갱신
-                return 0         # 인증 성공
+                return True         # 인증 성공
             else:
-                return 2        # 토큰 정보 틀림
+                raise BadRequest('토큰 오류')        # 토큰 정보 틀림
         else:
-            return 2
+            raise BadRequest('토큰 오류')
     except:
-        return -1
+        raise BadRequest('인증 오류')
 
 
 #db.session.commit()

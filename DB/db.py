@@ -12,9 +12,11 @@ class Files(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey('Users.uid'), nullable=False)
     del_yn = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, fname, fsize = 0, del_yn = 0):
+    def __init__(self, fname, pid, fsize, uid, del_yn = 0):
         self.fname = fname
+        self.pid = pid
         self.fsize = fsize
+        self.uid = uid
         self.del_yn = del_yn
 
     Share = db.relationship("Share", cascade = "all, delete")
